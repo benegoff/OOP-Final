@@ -1,21 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiSystem;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-
-import org.jfugue.midi.MidiFileManager;
-import org.jfugue.pattern.Pattern;
-import org.jfugue.player.Player;
 
 @SuppressWarnings("serial")
 public class PianoFrame extends JFrame {
@@ -28,11 +18,12 @@ public class PianoFrame extends JFrame {
 		pianoPanel = new PianoPanel();
 		notePanel = new NotePanel();
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLayout(new BorderLayout());
+		setLayout(new GridLayout(0 , 1));
 		setVisible(true);
 		setSize(400, 500);
-		add(pianoPanel, BorderLayout.CENTER);
-		add(notePanel, BorderLayout.PAGE_START);
+		add(notePanel);
+		add(pianoPanel);
+
 //		JButton playSongButton = new JButton("Play a sample song");
 //		playSongButton.addActionListener(new ActionListener() {
 //

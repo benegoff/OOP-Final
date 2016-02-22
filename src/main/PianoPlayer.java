@@ -8,10 +8,6 @@ public class PianoPlayer {
 		
 		PianoFrame p = new PianoFrame();
 		
-		
-        
-		//TODO: Refactor keyUI to paint rectangles instead of images
-		//TODO: Allow polyphony
 		//TODO: Allow MIDI file reading
 		//TODO: Add octave support
 		//TODO: Transform MIDI file into game rectangles

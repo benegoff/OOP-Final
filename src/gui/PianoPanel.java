@@ -7,7 +7,6 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import org.jfugue.player.Player;
 import org.jfugue.realtime.RealtimePlayer;
 
 import models.Piano;
@@ -24,7 +23,6 @@ public class PianoPanel extends JPanel {
 		try {
 			musicPlayer = new RealtimePlayer();
 		} catch (MidiUnavailableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		pressedNotes = new HashMap<String, ImageIcon>();

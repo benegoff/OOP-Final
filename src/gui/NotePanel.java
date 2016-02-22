@@ -1,5 +1,8 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -13,6 +16,12 @@ public class NotePanel extends JPanel {
 	
 	NotePanel(){
 		noteBlocks = new ArrayList<NoteBlock>();
+		repaint();
+	}
+	
+	@Override
+	public void paint(Graphics g){
+		
 	}
 	
 }

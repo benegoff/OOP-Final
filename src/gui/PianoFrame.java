@@ -21,15 +21,18 @@ import org.jfugue.player.Player;
 public class PianoFrame extends JFrame {
 	
 	private PianoPanel pianoPanel;
+	private NotePanel notePanel;
 
 	
 	public PianoFrame(){
 		pianoPanel = new PianoPanel();
+		notePanel = new NotePanel();
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setVisible(true);
 		setSize(400, 500);
 		add(pianoPanel, BorderLayout.CENTER);
+		add(notePanel, BorderLayout.PAGE_START);
 //		JButton playSongButton = new JButton("Play a sample song");
 //		playSongButton.addActionListener(new ActionListener() {
 //

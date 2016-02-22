@@ -1,7 +1,7 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -17,12 +17,23 @@ public class PianoFrame extends JFrame {
 	public PianoFrame(){
 		pianoPanel = new PianoPanel();
 		notePanel = new NotePanel();
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLayout(new GridLayout(0 , 1));
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLayout(new GridBagLayout());
 		setVisible(true);
 		setSize(400, 500);
-		add(notePanel);
-		add(pianoPanel);
+		GridBagConstraints notePanelGBC = new GridBagConstraints();
+		notePanelGBC.gridx = 0;
+		notePanelGBC.gridy = 0;
+		notePanelGBC.fill = GridBagConstraints.BOTH;
+		notePanelGBC.weighty = 3;
+		add(notePanel, notePanelGBC);
+		GridBagConstraints pianoPanelGBC = new GridBagConstraints();
+		pianoPanelGBC.fill = GridBagConstraints.BOTH;
+		pianoPanelGBC.weightx = 1;
+		pianoPanelGBC.weighty = 1;
+		pianoPanelGBC.gridx = 0;
+		pianoPanelGBC.gridy = 1;
+		add(pianoPanel, pianoPanelGBC);
 
 //		JButton playSongButton = new JButton("Play a sample song");
 //		playSongButton.addActionListener(new ActionListener() {

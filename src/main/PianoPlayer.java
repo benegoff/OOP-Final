@@ -9,9 +9,9 @@ public class PianoPlayer {
 		PianoFrame p = new PianoFrame();
 		
 		//TODO: Allow MIDI file reading
-		//TODO: Add octave support
 		//TODO: Transform MIDI file into game rectangles
 		//TODO: Link key presses to game rectangle locations
+		//TODO: Add octave support
 	}
 	
 }

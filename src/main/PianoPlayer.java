@@ -8,10 +8,9 @@ public class PianoPlayer {
 		
 		PianoFrame p = new PianoFrame();
 		
-		//TODO: Allow MIDI file reading
-		//TODO: Transform MIDI file into game rectangles
-		//TODO: Link key presses to game rectangle locations
-		//TODO: Add octave support
+		//TODO: Create "note blocks" which cascade from the top of the notePanel to the bottom
+			//Create some sort of "Tick" measurement which keeps track of time
+			//Create some sort of distinction between when a note is successfully hit or when it is missed
 	}
 	
 }

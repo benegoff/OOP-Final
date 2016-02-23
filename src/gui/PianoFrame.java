@@ -46,6 +46,9 @@ public class PianoFrame extends JFrame {
 //		});
 //		add(playSongButton, BorderLayout.PAGE_START);
 		this.addKeyListener(new PianoKeys());
+		this.setExtendedState(MAXIMIZED_BOTH);
+		this.setResizable(false);
+		notePanel.cascadeNotes();
 	}
 	
 	private class PianoKeys extends KeyAdapter {

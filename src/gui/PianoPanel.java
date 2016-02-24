@@ -9,13 +9,14 @@ import javax.swing.JPanel;
 
 import org.jfugue.realtime.RealtimePlayer;
 
+import enums.NotePitch;
 import models.Piano;
 
 @SuppressWarnings("serial")
 public class PianoPanel extends JPanel {
 	
 	private Piano piano;
-	private HashMap<String, ImageIcon> pressedNotes;
+	private HashMap<NotePitch, ImageIcon> pressedNotes;
 	private RealtimePlayer musicPlayer;
 
 	public PianoPanel(){
@@ -25,14 +26,14 @@ public class PianoPanel extends JPanel {
 		} catch (MidiUnavailableException e) {
 			e.printStackTrace();
 		}
-		pressedNotes = new HashMap<String, ImageIcon>();
+		pressedNotes = new HashMap<NotePitch, ImageIcon>();
 		setVisible(true);
 	}
 	
-	public void playNote(String note, int keyNum){
+	public void playNote(NotePitch note, int keyNum){
 		getPressedNotes().put(note, getPiano().getLitKeys()[keyNum]);
 		repaint();
-		musicPlayer.play(note + "o");
+		//musicPlayer.play(note + "o");
 	}
 	
 	public void releaseNote(String note){
@@ -40,7 +41,7 @@ public class PianoPanel extends JPanel {
 		repaint();
 	}
 	
-	public HashMap<String, ImageIcon> getPressedNotes() {
+	public HashMap<NotePitch, ImageIcon> getPressedNotes() {
 		return pressedNotes;
 	}
 	
@@ -56,7 +57,7 @@ public class PianoPanel extends JPanel {
 	public void paint(Graphics g) {
 		g.drawImage(piano.getPianoImage().getImage(), 0, 0, getWidth(), getHeight(), null);
 		
-		for(String s : pressedNotes.keySet()){
+		for(NotePitch s : pressedNotes.keySet()){
 			g.drawImage(pressedNotes.get(s).getImage(), 0, 0, getWidth(), getHeight(), null);
 		}
 

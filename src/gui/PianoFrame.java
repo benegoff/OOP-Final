@@ -7,6 +7,8 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 
+import enums.NotePitch;
+
 @SuppressWarnings("serial")
 public class PianoFrame extends JFrame {
 	
@@ -58,40 +60,52 @@ public class PianoFrame extends JFrame {
 			
 			switch (e.getKeyCode()){
 			case KeyEvent.VK_A:
-				pianoPanel.playNote("C", 0);
+				pianoPanel.playNote(NotePitch.C, 0);
+				notePanel.addNotesPlayed(NotePitch.C);
 				break;
 			case KeyEvent.VK_W:
-				pianoPanel.playNote("C#", 1);
+				pianoPanel.playNote(NotePitch.CS, 1);
+				notePanel.addNotesPlayed(NotePitch.CS);
 				break;
 			case KeyEvent.VK_S:
-				pianoPanel.playNote("D", 2);
+				pianoPanel.playNote(NotePitch.D, 2);
+				notePanel.addNotesPlayed(NotePitch.D);
 				break;
 			case KeyEvent.VK_E:
-				pianoPanel.playNote("D#", 3);
+				pianoPanel.playNote(NotePitch.DS, 3);
+				notePanel.addNotesPlayed(NotePitch.DS);
 				break;
 			case KeyEvent.VK_D:
-				pianoPanel.playNote("E", 4);
+				pianoPanel.playNote(NotePitch.E, 4);
+				notePanel.addNotesPlayed(NotePitch.E);
 				break;
 			case KeyEvent.VK_F:
-				pianoPanel.playNote("F", 5);
+				pianoPanel.playNote(NotePitch.F, 5);
+				notePanel.addNotesPlayed(NotePitch.F);
 				break;
 			case KeyEvent.VK_U:
-				pianoPanel.playNote("F#", 6);
+				pianoPanel.playNote(NotePitch.FS, 6);
+				notePanel.addNotesPlayed(NotePitch.FS);
 				break;
 			case KeyEvent.VK_J:
-				pianoPanel.playNote("G", 7);
+				pianoPanel.playNote(NotePitch.G, 7);
+				notePanel.addNotesPlayed(NotePitch.G);
 				break;
 			case KeyEvent.VK_I:
-				pianoPanel.playNote("G#", 8);
+				pianoPanel.playNote(NotePitch.GS, 8);
+				notePanel.addNotesPlayed(NotePitch.GS);
 				break;
 			case KeyEvent.VK_K:
-				pianoPanel.playNote("A", 9);
+				pianoPanel.playNote(NotePitch.A, 9);
+				notePanel.addNotesPlayed(NotePitch.A);
 				break;
 			case KeyEvent.VK_O:
-				pianoPanel.playNote("A#", 10);
+				pianoPanel.playNote(NotePitch.AS, 10);
+				notePanel.addNotesPlayed(NotePitch.AS);
 				break;
 			case KeyEvent.VK_L:
-				pianoPanel.playNote("B", 11);
+				pianoPanel.playNote(NotePitch.B, 11);
+				notePanel.addNotesPlayed(NotePitch.B);
 				break;
 			}
 			
@@ -102,39 +116,51 @@ public class PianoFrame extends JFrame {
 			switch (e.getKeyCode()){
 			case KeyEvent.VK_A:
 				pianoPanel.releaseNote("C");
+				notePanel.removeNotesPlayed(NotePitch.C);
 				break;
 			case KeyEvent.VK_W:
 				pianoPanel.releaseNote("C#");
+				notePanel.removeNotesPlayed(NotePitch.CS);
 				break;
 			case KeyEvent.VK_S:
 				pianoPanel.releaseNote("D");
+				notePanel.removeNotesPlayed(NotePitch.D);
 				break;
 			case KeyEvent.VK_E:
 				pianoPanel.releaseNote("D#");
+				notePanel.removeNotesPlayed(NotePitch.DS);
 				break;
 			case KeyEvent.VK_D:
 				pianoPanel.releaseNote("E");
+				notePanel.removeNotesPlayed(NotePitch.E);
 				break;
 			case KeyEvent.VK_F:
 				pianoPanel.releaseNote("F");
+				notePanel.removeNotesPlayed(NotePitch.F);
 				break;
 			case KeyEvent.VK_U:
 				pianoPanel.releaseNote("F#");
+				notePanel.removeNotesPlayed(NotePitch.FS);
 				break;
 			case KeyEvent.VK_J:
 				pianoPanel.releaseNote("G");
+				notePanel.removeNotesPlayed(NotePitch.G);
 				break;
 			case KeyEvent.VK_I:
 				pianoPanel.releaseNote("G#");
+				notePanel.removeNotesPlayed(NotePitch.GS);
 				break;
 			case KeyEvent.VK_K:
 				pianoPanel.releaseNote("A");
+				notePanel.removeNotesPlayed(NotePitch.A);
 				break;
 			case KeyEvent.VK_O:
 				pianoPanel.releaseNote("A#");
+				notePanel.removeNotesPlayed(NotePitch.AS);
 				break;
 			case KeyEvent.VK_L:
 				pianoPanel.releaseNote("B");
+				notePanel.removeNotesPlayed(NotePitch.B);
 				break;
 			}
 		}

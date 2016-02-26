@@ -1,15 +1,21 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.JLabel;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiSystem;
 import javax.swing.JPanel;
 
+import org.jfugue.midi.MidiParser;
+
 import enums.NotePitch;
+import midi.NoteBlockParserListener;
 import models.NoteBlock;
 
 @SuppressWarnings("serial")
@@ -17,55 +23,63 @@ public class NotePanel extends JPanel {
 
 	private ArrayList<NoteBlock> noteBlocks;
 	private HashMap<NotePitch, Boolean> notesPlayed;
+	private HashMap<NotePitch, Boolean> validKeys;
 	private int score;
 	private int combo;
-	
-	NotePanel(){
-		score = 0;
-		notesPlayed = new HashMap<NotePitch, Boolean>();
-		initializeHashMap();
+
+	NotePanel() {
 		noteBlocks = new ArrayList<NoteBlock>();
-		NoteBlock block = new NoteBlock(NotePitch.AS, 1000, 0);
-		NoteBlock block2 = new NoteBlock(NotePitch.E, 452, 450);
-		NoteBlock block3 = new NoteBlock(NotePitch.D, 856, 1000);
-		noteBlocks.add(block);
-		noteBlocks.add(block2);
-		noteBlocks.add(block3);
-		this.setLayout(new BorderLayout());
-		JLabel score = new JLabel("SCORE: " + this.score);
-		this.setVisible(true);
-		score.setVisible(true);
-		this.add(score, BorderLayout.PAGE_START);
+		score = 0;
+		combo = 0;
+		notesPlayed = new HashMap<NotePitch, Boolean>();
+		validKeys = new HashMap<NotePitch, Boolean>();
+		initializeHashMap(notesPlayed);
+		initializeHashMap(validKeys);
+		
 	}
-	
-	public void initializeHashMap(){
-		notesPlayed.put(NotePitch.C, false);
-		notesPlayed.put(NotePitch.CS, false);
-		notesPlayed.put(NotePitch.D, false);
-		notesPlayed.put(NotePitch.DS, false);
-		notesPlayed.put(NotePitch.E, false);
-		notesPlayed.put(NotePitch.F, false);
-		notesPlayed.put(NotePitch.FS, false);
-		notesPlayed.put(NotePitch.G, false);
-		notesPlayed.put(NotePitch.GS, false);
-		notesPlayed.put(NotePitch.A, false);
-		notesPlayed.put(NotePitch.AS, false);
-		notesPlayed.put(NotePitch.B, false);
+
+	public void initializeHashMap(HashMap<NotePitch, Boolean> h) {
+		h.put(NotePitch.C, false);
+		h.put(NotePitch.CS, false);
+		h.put(NotePitch.D, false);
+		h.put(NotePitch.DS, false);
+		h.put(NotePitch.E, false);
+		h.put(NotePitch.F, false);
+		h.put(NotePitch.FS, false);
+		h.put(NotePitch.G, false);
+		h.put(NotePitch.GS, false);
+		h.put(NotePitch.A, false);
+		h.put(NotePitch.AS, false);
+		h.put(NotePitch.B, false);
 	}
-	
-	public int getNoteBlockXPosition(NoteBlock b){
+
+	public int getNoteBlockXPosition(NoteBlock b) {
 		return b.getPitch().ordinal() * (this.getWidth() / 12);
 	}
+
+	public void createBlocksFromSong(){
+		try {
+			MidiParser parser = new MidiParser();
+		    NoteBlockParserListener listener = new NoteBlockParserListener((this.getHeight() * 120) / 100);
+		    parser.addParserListener(listener);
+		    parser.parse(MidiSystem.getSequence(new File("test.mid")));
+			noteBlocks = listener.getBlocks();
+		} catch (InvalidMidiDataException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	
-	public void cascadeNotes(){
+	public void cascadeNotes() {
+		createBlocksFromSong();
 		int time = 0;
-		while(true){
+		while (true) {
 			try {
 				Thread.sleep(10);
-				for(NoteBlock b : noteBlocks){
+				for (NoteBlock b : noteBlocks) {
 					b.tick(time);
-					
-					if(b.getCurrentLength() + b.getYPosition() >= this.getHeight() - 10){
+
+					if (b.getCurrentLength() + b.getYPosition() >= this.getHeight() - 20) {
 						noteReachedBottom(b);
 					}
 				}
@@ -76,51 +90,85 @@ public class NotePanel extends JPanel {
 			}
 		}
 	}
-	
-	public void noteReachedBottom(NoteBlock b){
-		if(b.getCurrentLength() + b.getYPosition() <= this.getHeight() + 10){
+
+	public void noteReachedBottom(NoteBlock b) {
+		validKeys.put(b.getPitch(), true);
+		if (b.getCurrentLength() + b.getYPosition() <= this.getHeight() + 20) {
 			inGracePeriod(b);
-		}
-		else if(b.getYPosition() < this.getHeight()){
-			if(b.getSuccessful() && notesPlayed.get(b.getPitch())){
-				System.out.println("Rack up the score here");
+		} else if (b.getYPosition() < this.getHeight()) {
+			if (!b.getSuccessful()) {
+				combo = 0;
 			}
-			else{
+			if (b.getSuccessful() && notesPlayed.get(b.getPitch())) {
+				increaseScore();
+			} else {
 				b.setColor(Color.RED);
-				System.out.println("Note was missed.");
 			}
+		} else if(b.getYPosition() >= this.getHeight() + 20){
+			validKeys.put(b.getPitch(), false);
 		}
 	}
-	
-	public void inGracePeriod(NoteBlock b){
-		if(notesPlayed.get(b.getPitch())){
+
+	public void inGracePeriod(NoteBlock b) {
+		if (notesPlayed.get(b.getPitch())) {
+			if (!b.getSuccessful() || b.getYPosition() == this.getHeight() + 20) {
+				combo++;
+			}
 			b.setSuccessful(true);
-			System.out.println("Good Job!");
-		}
-		else {
+		} else {
 			b.setSuccessful(false);
-			System.out.println("Try again");
 		}
 	}
-	
+
+	public void increaseScore() {
+		if (combo == 0) {
+			score++;
+		} else {
+			score += combo;
+		}
+	}
+
 	@Override
-	public void paint(Graphics g){
+	public void paint(Graphics g) {
 		g.setColor(Color.BLUE);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		for(NoteBlock b : noteBlocks){
-			g.setColor(b.getColor());
-			g.fillRect(getNoteBlockXPosition(b), b.getYPosition(), this.getWidth() / 12, b.getCurrentLength());
-			g.setColor(Color.BLACK);
-			g.drawRect(getNoteBlockXPosition(b), b.getYPosition(), this.getWidth() / 12, b.getCurrentLength());
+		if(noteBlocks.size() != 0){
+			for (NoteBlock b : noteBlocks) {
+				g.setColor(b.getColor());
+				g.fillRect(getNoteBlockXPosition(b), b.getYPosition(), this.getWidth() / 12, b.getCurrentLength());
+				g.setColor(Color.BLACK);
+				g.drawRect(getNoteBlockXPosition(b), b.getYPosition(), this.getWidth() / 12, b.getCurrentLength());
+			}
 		}
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, this.getWidth(), 70);
+		g.setColor(Color.YELLOW);
+		g.setFont(new Font("Impact", Font.ITALIC, 35));
+		g.drawString("Score: " + this.score, 50, 50);
+		g.drawString("COMBO: x" + this.combo, this.getWidth() - 250, 50);
 	}
-	
-	public void addNotesPlayed(NotePitch p){
+
+	public void addNotesPlayed(NotePitch p) {
 		notesPlayed.put(p, true);
 	}
-	
-	public void removeNotesPlayed(NotePitch p){
+
+	public void removeNotesPlayed(NotePitch p) {
 		notesPlayed.put(p, false);
+	}
+
+	public int getScore() {
+		return this.score;
+	}
+
+	public void keyPressed(NotePitch p) {
+		addNotesPlayed(p);
+		if(!validKeys.get(p)){
+			combo = 0;
+		}
+	}
+
+	public void createBlocks(){
+		
 	}
 	
 }

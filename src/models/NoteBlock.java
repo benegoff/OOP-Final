@@ -14,62 +14,60 @@ public class NoteBlock {
 	private boolean wasSuccessful;
 	private Color color;
 
-	public NoteBlock(NotePitch pitch, int duration, int startTime){
+	public NoteBlock(NotePitch pitch, int duration, int startTime) {
 		this.wasSuccessful = true;
 		this.pitch = pitch;
 		this.currentLength = 0;
 		this.yPosition = 0;
 		this.startTime = startTime;
 		color = Color.GREEN;
-		//CHANGE THESE LATER
 		noteLength = duration;
 	}
-	
-	public NotePitch getPitch(){
+
+	public NotePitch getPitch() {
 		return this.pitch;
 	}
-	
-	public int getCurrentLength(){
+
+	public int getCurrentLength() {
 		return currentLength;
 	}
-	
-	public int getYPosition(){
+
+	public int getYPosition() {
 		return yPosition;
 	}
-	
-	public int getStartTime(){
+
+	public int getStartTime() {
 		return startTime;
 	}
-	
+
 	public int getNoteLength() {
 		return noteLength;
 	}
-	
-	public boolean getSuccessful(){
+
+	public boolean getSuccessful() {
 		return this.wasSuccessful;
 	}
-	
-	public void setSuccessful(boolean success){
+
+	public void setSuccessful(boolean success) {
 		this.wasSuccessful = success;
 	}
-	
-	public Color getColor(){
+
+	public Color getColor() {
 		return this.color;
 	}
-	
-	public void setColor(Color c){
+
+	public void setColor(Color c) {
 		color = c;
 	}
-	
-	public void tick(int time){
-		if(time >= this.getStartTime()){
-			if(currentLength < noteLength){
+
+	public void tick(int time) {
+		if (time >= this.getStartTime()) {
+			if (currentLength < noteLength) {
 				currentLength += 5;
-			}
-			else{
+			} else {
 				yPosition += 5;
 			}
 		}
 	}
-	
+
 }

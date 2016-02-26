@@ -36,7 +36,7 @@ public class PianoPanel extends JPanel {
 		//musicPlayer.play(note + "o");
 	}
 	
-	public void releaseNote(String note){
+	public void releaseNote(NotePitch note){
 		getPressedNotes().remove(note);
 		repaint();
 	}

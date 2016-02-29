@@ -4,7 +4,7 @@ public class WhitePianoKey extends PianoKey {
 
 	public WhitePianoKey(String note) {
 		super(note);
-		this.setColor("#FFFFFF");
+		// TODO Auto-generated constructor stub
 	}
 
 }

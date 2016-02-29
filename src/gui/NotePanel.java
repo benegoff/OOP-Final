@@ -16,7 +16,7 @@ import org.jfugue.midi.MidiParser;
 
 import enums.NotePitch;
 import midi.NoteBlockParserListener;
-import models.NoteBlock;
+import models.noteBlocks.NoteBlock;
 
 @SuppressWarnings("serial")
 public class NotePanel extends JPanel {
@@ -60,7 +60,7 @@ public class NotePanel extends JPanel {
 	public void createBlocksFromSong(){
 		try {
 			MidiParser parser = new MidiParser();
-		    NoteBlockParserListener listener = new NoteBlockParserListener((this.getHeight() * 120) / 100);
+		    NoteBlockParserListener listener = new NoteBlockParserListener(this.getHeight());
 		    parser.addParserListener(listener);
 		    parser.parse(MidiSystem.getSequence(new File("test.mid")));
 			noteBlocks = listener.getBlocks();
@@ -135,9 +135,9 @@ public class NotePanel extends JPanel {
 		if(noteBlocks.size() != 0){
 			for (NoteBlock b : noteBlocks) {
 				g.setColor(b.getColor());
-				g.fillRect(getNoteBlockXPosition(b), b.getYPosition(), this.getWidth() / 12, b.getCurrentLength());
+				g.fillRect(b.getXPosition(), b.getYPosition(), b.getNoteWidth(), b.getCurrentLength());
 				g.setColor(Color.BLACK);
-				g.drawRect(getNoteBlockXPosition(b), b.getYPosition(), this.getWidth() / 12, b.getCurrentLength());
+				g.drawRect(b.getXPosition(), b.getYPosition(), b.getNoteWidth(), b.getCurrentLength());
 			}
 		}
 		g.setColor(Color.BLACK);

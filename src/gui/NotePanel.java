@@ -10,11 +10,13 @@ import java.util.HashMap;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 import javax.swing.JPanel;
 
 import org.jfugue.midi.MidiParser;
 
 import enums.NotePitch;
+import midi.MusicPlayer;
 import midi.NoteBlockParserListener;
 import models.noteBlocks.NoteBlock;
 
@@ -26,8 +28,9 @@ public class NotePanel extends JPanel {
 	private HashMap<NotePitch, Boolean> validKeys;
 	private int score;
 	private int combo;
+	private Sequence song;
 
-	NotePanel() {
+	NotePanel(String filePath) {
 		noteBlocks = new ArrayList<NoteBlock>();
 		score = 0;
 		combo = 0;
@@ -35,7 +38,11 @@ public class NotePanel extends JPanel {
 		validKeys = new HashMap<NotePitch, Boolean>();
 		initializeHashMap(notesPlayed);
 		initializeHashMap(validKeys);
-		
+		try {
+			song = MidiSystem.getSequence(new File(filePath));
+		} catch (InvalidMidiDataException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void initializeHashMap(HashMap<NotePitch, Boolean> h) {
@@ -53,24 +60,17 @@ public class NotePanel extends JPanel {
 		h.put(NotePitch.B, false);
 	}
 
-	public int getNoteBlockXPosition(NoteBlock b) {
-		return b.getPitch().ordinal() * (this.getWidth() / 12);
-	}
-
 	public void createBlocksFromSong(){
-		try {
-			MidiParser parser = new MidiParser();
-		    NoteBlockParserListener listener = new NoteBlockParserListener(this.getHeight());
-		    parser.addParserListener(listener);
-		    parser.parse(MidiSystem.getSequence(new File("test.mid")));
-			noteBlocks = listener.getBlocks();
-		} catch (InvalidMidiDataException | IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		MidiParser parser = new MidiParser();
+		NoteBlockParserListener listener = new NoteBlockParserListener(this.getHeight());
+		parser.addParserListener(listener);
+		parser.parse(song);
+		noteBlocks = listener.getBlocks();
 	}
 	
 	public void cascadeNotes() {
+		Thread t = new Thread(new MusicPlayer(song));
+		t.start();
 		createBlocksFromSong();
 		int time = 0;
 		while (true) {
@@ -111,7 +111,7 @@ public class NotePanel extends JPanel {
 
 	public void inGracePeriod(NoteBlock b) {
 		if (notesPlayed.get(b.getPitch())) {
-			if (!b.getSuccessful() || b.getYPosition() == this.getHeight() + 20) {
+			if (!b.getSuccessful() || b.getYPosition() >= this.getHeight() + 20) {
 				combo++;
 			}
 			b.setSuccessful(true);
@@ -165,10 +165,6 @@ public class NotePanel extends JPanel {
 		if(!validKeys.get(p)){
 			combo = 0;
 		}
-	}
-
-	public void createBlocks(){
-		
 	}
 	
 }

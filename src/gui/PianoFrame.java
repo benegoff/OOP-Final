@@ -18,7 +18,7 @@ public class PianoFrame extends JFrame {
 	
 	public PianoFrame(){
 		pianoPanel = new PianoPanel();
-		notePanel = new NotePanel();
+		notePanel = new NotePanel("test.mid");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new GridBagLayout());
 		setVisible(true);
@@ -37,21 +37,13 @@ public class PianoFrame extends JFrame {
 		pianoPanelGBC.gridy = 1;
 		add(pianoPanel, pianoPanelGBC);
 
-
-//		JButton playSongButton = new JButton("Play a sample song");
-//		playSongButton.addActionListener(new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent arg0) {
-//
-//			}
-//			
-//		});
-//		add(playSongButton, BorderLayout.PAGE_START);
 		this.addKeyListener(new PianoKeys());
 		this.setExtendedState(MAXIMIZED_BOTH);
+		this.setSize(1950, 1048);
 		this.setResizable(false);
+
 		notePanel.cascadeNotes();
+		
 	}
 	
 	private class PianoKeys extends KeyAdapter {

@@ -23,6 +23,8 @@ import models.noteBlocks.NoteBlock;
 @SuppressWarnings("serial")
 public class NotePanel extends JPanel {
 
+	//MidiMessage 144: Note
+	
 	private ArrayList<NoteBlock> noteBlocks;
 	private HashMap<NotePitch, Boolean> notesPlayed;
 	private HashMap<NotePitch, Boolean> validKeys;
@@ -40,6 +42,7 @@ public class NotePanel extends JPanel {
 		initializeHashMap(validKeys);
 		try {
 			song = MidiSystem.getSequence(new File(filePath));
+			
 		} catch (InvalidMidiDataException | IOException e) {
 			e.printStackTrace();
 		}
@@ -62,15 +65,15 @@ public class NotePanel extends JPanel {
 
 	public void createBlocksFromSong(){
 		MidiParser parser = new MidiParser();
-		NoteBlockParserListener listener = new NoteBlockParserListener(this.getHeight());
+		NoteBlockParserListener listener = new NoteBlockParserListener(song);
 		parser.addParserListener(listener);
 		parser.parse(song);
 		noteBlocks = listener.getBlocks();
 	}
 	
 	public void cascadeNotes() {
-		Thread t = new Thread(new MusicPlayer(song));
-		t.start();
+		Thread musicThread = new Thread(new MusicPlayer(song));
+		musicThread.start();
 		createBlocksFromSong();
 		int time = 0;
 		while (true) {

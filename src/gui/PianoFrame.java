@@ -16,9 +16,9 @@ public class PianoFrame extends JFrame {
 	private NotePanel notePanel;
 
 	
-	public PianoFrame(){
+	public PianoFrame(String filePath){
 		pianoPanel = new PianoPanel();
-		notePanel = new NotePanel("test.mid");
+		notePanel = new NotePanel(filePath);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new GridBagLayout());
 		setVisible(true);

@@ -31,6 +31,7 @@ public class NotePanel extends JPanel {
 	private int score;
 	private int combo;
 	private Sequence song;
+	private static final int GRACE_PERIOD = 30;
 
 	NotePanel(String filePath) {
 		noteBlocks = new ArrayList<NoteBlock>();
@@ -82,7 +83,7 @@ public class NotePanel extends JPanel {
 				for (NoteBlock b : noteBlocks) {
 					b.tick(time);
 
-					if (b.getCurrentLength() + b.getYPosition() >= this.getHeight() - 20) {
+					if (b.getCurrentLength() + b.getYPosition() >= this.getHeight() - GRACE_PERIOD) {
 						noteReachedBottom(b);
 					}
 				}
@@ -96,7 +97,7 @@ public class NotePanel extends JPanel {
 
 	public void noteReachedBottom(NoteBlock b) {
 		validKeys.put(b.getPitch(), true);
-		if (b.getCurrentLength() + b.getYPosition() <= this.getHeight() + 20) {
+		if (b.getCurrentLength() + b.getYPosition() <= this.getHeight() + GRACE_PERIOD) {
 			inGracePeriod(b);
 		} else if (b.getYPosition() < this.getHeight()) {
 			if (!b.getSuccessful()) {
@@ -107,14 +108,15 @@ public class NotePanel extends JPanel {
 			} else {
 				b.setColor(Color.RED);
 			}
-		} else if(b.getYPosition() >= this.getHeight() + 20){
+		} else if(b.getYPosition() >= this.getHeight() + GRACE_PERIOD){
 			validKeys.put(b.getPitch(), false);
 		}
 	}
 
 	public void inGracePeriod(NoteBlock b) {
+//		 || b.getYPosition() >= this.getHeight() + GRACE_PERIOD
 		if (notesPlayed.get(b.getPitch())) {
-			if (!b.getSuccessful() || b.getYPosition() >= this.getHeight() + 20) {
+			if (!b.getSuccessful()) {
 				combo++;
 			}
 			b.setSuccessful(true);

@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import enums.NotePitch;
 
 @SuppressWarnings("serial")
-public class PianoFrame extends JFrame {
+public class PianoFrame extends JFrame implements Runnable {
 	
 	private PianoPanel pianoPanel;
 	private NotePanel notePanel;
@@ -22,27 +22,25 @@ public class PianoFrame extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new GridBagLayout());
 		setVisible(true);
-		setSize(400, 500);
-		GridBagConstraints notePanelGBC = new GridBagConstraints();
-		notePanelGBC.gridx = 0;
-		notePanelGBC.gridy = 0;
-		notePanelGBC.fill = GridBagConstraints.BOTH;
-		notePanelGBC.weighty = 3;
-		add(notePanel, notePanelGBC);
 		GridBagConstraints pianoPanelGBC = new GridBagConstraints();
 		pianoPanelGBC.fill = GridBagConstraints.BOTH;
 		pianoPanelGBC.weightx = 1;
 		pianoPanelGBC.weighty = 1;
 		pianoPanelGBC.gridx = 0;
 		pianoPanelGBC.gridy = 1;
+		GridBagConstraints notePanelGBC = new GridBagConstraints();
+		notePanelGBC.gridx = 0;
+		notePanelGBC.gridy = 0;
+		notePanelGBC.fill = GridBagConstraints.BOTH;
+		notePanelGBC.weighty = 3;
 		add(pianoPanel, pianoPanelGBC);
+		add(notePanel, notePanelGBC);
 
 		this.addKeyListener(new PianoKeys());
 		this.setExtendedState(MAXIMIZED_BOTH);
 		this.setSize(1950, 1048);
 		this.setResizable(false);
-
-		notePanel.cascadeNotes();
+		this.requestFocusInWindow();
 		
 	}
 	
@@ -159,5 +157,21 @@ public class PianoFrame extends JFrame {
 		}
 		
 	}
+
+	@Override
+	public void run() {
+//		pianoPanel = new PianoPanel();
+//		GridBagConstraints pianoPanelGBC = new GridBagConstraints();
+//		pianoPanelGBC.fill = GridBagConstraints.BOTH;
+//		pianoPanelGBC.weightx = 1;
+//		pianoPanelGBC.weighty = 1;
+//		pianoPanelGBC.gridx = 0;
+//		pianoPanelGBC.gridy = 1;
+//		add(pianoPanel, pianoPanelGBC);
+//		this.add(pianoPanel, pianoPanelGBC);
+		notePanel.cascadeNotes();
+	}
+
+
 	
 }

@@ -21,7 +21,7 @@ import midi.NoteBlockParserListener;
 import models.noteBlocks.NoteBlock;
 
 @SuppressWarnings("serial")
-public class NotePanel extends JPanel {
+public class NotePanel extends JPanel implements Runnable {
 
 	//MidiMessage 144: Note
 	
@@ -170,6 +170,11 @@ public class NotePanel extends JPanel {
 		if(!validKeys.get(p)){
 			combo = 0;
 		}
+	}
+
+	@Override
+	public void run() {
+		cascadeNotes();
 	}
 	
 }
